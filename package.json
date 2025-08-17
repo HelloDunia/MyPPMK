@@ -1,7 +1,7 @@
 {
-  "name": "trying-graph-obsidian-like",
+  "name": "myppmk",
   "version": "1.0.0",
-  "description": "",
+  "description": "Project that showcase the connection between Malaysian Student Communities in a fun and interactive way for HackPPMK25 event.",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
