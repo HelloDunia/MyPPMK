@@ -38,3 +38,7 @@ Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance. Then it will serve the project immediately. 
 
 `p/s:` The id of the map will be duplicated when run a dev build hence why we build and serve the app even for locally.
+
+## License
+
+&copy; 2025 HelloDunia
