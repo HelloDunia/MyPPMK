@@ -1,0 +1,16 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* To prevent scrollbars if content exceeds viewport */
+}
+
+.vis-network {
+  height: 100%;
+  width: 100%;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
