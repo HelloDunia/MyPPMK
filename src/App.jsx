@@ -229,6 +229,19 @@ export default function App() {
 
   return (
     <> 
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          zIndex: "1000",
+          fontSize: "2em",
+          fontWeight: "bold",
+          color: "#333",
+        }}
+      >
+        MyPPMK
+      </div>
       <Graph
         graph={graph}
         options={options}
@@ -264,6 +277,9 @@ export default function App() {
           <button onClick={() => setSelectedNode(null)}>Close</button>
         </div>
       )}
+<footer>
+        <p>&copy; 2025 HelloDunia</p>
+      </footer>
     </>
   );
 }
