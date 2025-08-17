@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Graph from "react-vis-network-graph";
-import "./styles.css";
+
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,7 +9,7 @@ export default function App() {
   const [networkInstance, setNetworkInstance] = useState(null);
 
   // Define highlight color
-  const HIGHLIGHT_COLOR = "#00FFFF"; // Cyan for highlighting
+  const HIGHLIGHT_COLOR = "#FFD700"; // Gold  for highlighting
   const DEFAULT_COLOR = "grey"; // Default color for nodes and edges
 
   const imageNodesData = [
@@ -70,15 +70,33 @@ export default function App() {
     preloadImages();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      window.location.reload();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const options = {
     layout: { hierarchical: false },
     edges: {
       color: DEFAULT_COLOR, // Default edge color
       arrows: { to: false },
+      font: {
+        face: "Inter",
+      },
     },
     nodes: {
       borderWidth: 2, // Default border width
       size: 30,
+      font: {
+        face: "Inter",
+      },
       color: {
         border: DEFAULT_COLOR,
         highlight: {
@@ -215,6 +233,7 @@ export default function App() {
           alignItems: "center",
           height: "100vh",
           fontSize: "2em",
+          fontFamily: "'Inter'",
         }}
       >
         Loading images...
@@ -238,9 +257,32 @@ export default function App() {
           fontSize: "2em",
           fontWeight: "bold",
           color: "#333",
+          fontFamily: "'Inter'",
         }}
       >
-        MyPPMK
+        <div>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "1em",
+              fontWeight: "bold",
+              color: "#FFD700",
+              fontFamily: "'Inter'",
+            }}
+          >
+            MyPPMK
+          </h1>
+          <p
+            style={{
+              margin: 0,
+              fontSize: "0.5em",
+              color: "#333",
+              fontFamily: "'Inter'",
+            }}
+          >
+            Community Map
+          </p>
+        </div>
       </div>
       <Graph
         graph={graph}
@@ -263,6 +305,7 @@ export default function App() {
             borderLeft: "1px solid #ccc",
             padding: "20px",
             boxShadow: "-2px 0 5px rgba(0,0,0,0.1)",
+            fontFamily: "'Inter'",
             overflowY: "auto",
           }}
         >
@@ -278,7 +321,7 @@ export default function App() {
         </div>
       )}
 <footer>
-        <p>&copy; 2025 HelloDunia</p>
+        <p style={{ fontFamily: "'Inter'" }}>&copy; 2025 HelloDunia</p>
       </footer>
     </>
   );

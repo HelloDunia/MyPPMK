@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../public/fonts/Inter_28pt-Regular.ttf') format('truetype');
+  font-weight: 100 900;
+}
+
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -8,9 +14,10 @@ html, body, #root {
 .vis-network {
   height: 100%;
   width: 100%;
+  background-color: black;
 }
 
 .App {
-  font-family: sans-serif;
+  font-family: 'Inter';
   text-align: center;
 }
