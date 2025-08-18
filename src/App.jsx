@@ -6,32 +6,15 @@ import NodeDetailPopup from "./components/NodeDetailPopup";
 import GraphCanvas from "./components/GraphCanvas";
 import { HIGHLIGHT_COLOR, DEFAULT_COLOR } from "./constants/graphConstants";
 import { graphPhysicsOptions } from "./components/Physics";
+import { supabase } from "./supabaseClient";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState(null);
   const [graphNodes, setGraphNodes] = useState([]);
   const [networkInstance, setNetworkInstance] = useState(null);
-
-  const imageNodesData = [
-    { id: 1, image: "https://picsum.photos/200/200", title: "node 1 tooltip text" },
-    { id: 2, image: "https://picsum.photos/200/200", title: "node 2 tooltip text" },
-    { id: 3, image: "https://picsum.photos/200/200", title: "node 3 tooltip text" },
-    { id: 4, image: "https://picsum.photos/200/200", title: "node 4 tooltip text" },
-    { id: 5, image: "https://picsum.photos/200/200", title: "node 5 tooltip text" },
-    { id: 6, image: "https://picsum.photos/200/200", title: "node 6 tooltip text" },
-  ];
-
-  // Initialize edges with useState
-  const [edges, setEdges] = useState([
-    { id: "1-2", from: 1, to: 2, color: "grey" }, // Added unique IDs for edges
-    { id: "1-3", from: 1, to: 3, color: "grey" },
-    { id: "2-4", from: 2, to: 4, color: "grey" },
-    { id: "2-5", from: 2, to: 5, color: "grey" },
-    { id: "2-6", from: 2, to: 6, color: "grey" },
-    { from: 6, to: 1, color: "grey" },
-    { from: 5, to: 6, color: "grey" },
-  ]);
+  const [edges, setEdges] = useState([]);
+  const [clubs, setClubs] = useState([]);
 
   // Keep track of the previously selected node and its connected edges/nodes for resetting
   const [previousSelection, setPreviousSelection] = useState({
@@ -41,34 +24,52 @@ export default function App() {
   });
 
   useEffect(() => {
-    // All nodes are circularImage from the start
-    setGraphNodes(imageNodesData.map((node) => ({ ...node, shape: "circularImage", label: "" })));
+    console.log("useEffect triggered");
+    const fetchData = async () => {
+      setIsLoading(true);
+      const { data: clubsData, error: clubsError } = await supabase.from("clubs").select();
+      if (clubsError || !clubsData || clubsData.length === 0) {
+        console.error("Error fetching clubs or no clubs found:", clubsError);
+        setIsLoading(false);
+        return;
+      }
+      setClubs(clubsData);
 
-    const preloadImages = async () => {
-      const imagePromises = imageNodesData.map((node) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = node.image;
-          img.onload = () => resolve();
-          img.onerror = () => resolve();
+      const { data: edgesData, error: edgesError } = await supabase.from("edges").select();
+      if (edgesError) {
+        console.error("Error fetching edges:", edgesError);
+        return;
+      }
+      setEdges(edgesData.map(edge => ({...edge, color: "grey"})));
+
+      const imageNodesData = clubsData.map((club) => ({
+        id: club.id,
+                image: `${process.env.REACT_APP_SUPABASE_STORAGE_URL}${club.club_abbreviated_name}.jpg`,
+        title: club.club_name,
+        shape: "circularImage",
+        label: "",
+      }));
+
+      setGraphNodes(imageNodesData);
+
+      const preloadImages = async () => {
+        const imagePromises = imageNodesData.map((node) => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.src = node.image;
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+          });
         });
-      });
 
-      await Promise.all(imagePromises);
+        await Promise.all(imagePromises);
+        setIsLoading(false);
+      };
 
-      // No need to change shape here, as it's already circularImage
-      setGraphNodes(
-        imageNodesData.map((node) => ({
-          ...node,
-          shape: "circularImage", // Keep as circularImage
-          label: "",
-        }))
-      );
-
-      setIsLoading(false);
+      preloadImages();
     };
 
-    preloadImages();
+    fetchData();
   }, []);
 
   
@@ -139,7 +140,7 @@ export default function App() {
 
       if (selectedNodeIds.length > 0) {
         const nodeId = selectedNodeIds[0];
-        const nodeInfo = imageNodesData.find((node) => node.id === nodeId);
+        const nodeInfo = clubs.find((node) => node.id === nodeId);
         setSelectedNode(nodeInfo);
 
         // Highlight selected node with thicker border and highlight color

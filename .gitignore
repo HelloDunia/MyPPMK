@@ -25,6 +25,7 @@ yarn-error.log*
 
 # Gemini
 GEMINI.md
+/info
 
 # Sample data
 public/sample-data
