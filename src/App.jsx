@@ -5,6 +5,7 @@ import Loader from "./components/Loader";
 import NodeDetailPopup from "./components/NodeDetailPopup";
 import GraphCanvas from "./components/GraphCanvas";
 import { HIGHLIGHT_COLOR, DEFAULT_COLOR } from "./constants/graphConstants";
+import { graphPhysicsOptions } from "./components/Physics";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -101,19 +102,7 @@ export default function App() {
       borderWidthSelected: 5,
     },
     interaction: { hover: true },
-    physics: {
-      enabled: true,
-      barnesHut: {
-        gravitationalConstant: -8000,
-        springConstant: 0.04,
-        springLength: 95,
-        damping: 0.09,
-        centralGravity: 0.3,
-      },
-      stabilization: {
-        iterations: 1000,
-      },
-    },
+    physics: graphPhysicsOptions,
   };
 
   const events = {

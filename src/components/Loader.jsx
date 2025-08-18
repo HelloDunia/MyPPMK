@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Loader() {
+  const messages = [
+    "Messaging Faiz...",
+    "Drawing the circles...",
+    "Chat and Building...",
+    "Something is happening...",
+  ];
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
+    }, 3000); // Change message every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        fontSize: "2em",
-        fontFamily: "'Inter'",
-      }}
+      className="flex flex-col justify-center items-center h-screen text-4xl"
     >
-      Loading images...
+      <span className="loading loading-ring loading-lg"></span>
+      <p className="ml-4 mt-4 text-xl">{messages[currentMessageIndex]}</p>
     </div>
   );
 }
