@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Graph from "react-vis-network-graph";
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Loader from "./components/Loader";
+import NodeDetailPopup from "./components/NodeDetailPopup";
+import GraphCanvas from "./components/GraphCanvas";
+import { HIGHLIGHT_COLOR, DEFAULT_COLOR } from "./constants/graphConstants";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState(null);
   const [graphNodes, setGraphNodes] = useState([]);
   const [networkInstance, setNetworkInstance] = useState(null);
-
-  // Define highlight color
-  const HIGHLIGHT_COLOR = "#FFD700"; // Gold  for highlighting
-  const DEFAULT_COLOR = "grey"; // Default color for nodes and edges
 
   const imageNodesData = [
     { id: 1, image: "https://picsum.photos/200/200", title: "node 1 tooltip text" },
@@ -70,17 +70,7 @@ export default function App() {
     preloadImages();
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      window.location.reload();
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  
 
   const options = {
     layout: { hierarchical: false },
@@ -225,20 +215,7 @@ export default function App() {
   };
 
   if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          fontSize: "2em",
-          fontFamily: "'Inter'",
-        }}
-      >
-        Loading images...
-      </div>
-    );
+    return <Loader />;
   }
 
   const graph = {
@@ -248,43 +225,8 @@ export default function App() {
 
   return (
     <> 
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          zIndex: "1000",
-          fontSize: "2em",
-          fontWeight: "bold",
-          color: "#333",
-          fontFamily: "'Inter'",
-        }}
-      >
-        <div>
-          <h1
-            style={{
-              margin: 0,
-              fontSize: "1em",
-              fontWeight: "bold",
-              color: "#FFD700",
-              fontFamily: "'Inter'",
-            }}
-          >
-            MyPPMK
-          </h1>
-          <p
-            style={{
-              margin: 0,
-              fontSize: "0.5em",
-              color: "#333",
-              fontFamily: "'Inter'",
-            }}
-          >
-            Community Map
-          </p>
-        </div>
-      </div>
-      <Graph
+      <Header />
+      <GraphCanvas
         graph={graph}
         options={options}
         events={events}
@@ -293,36 +235,8 @@ export default function App() {
         }}
       />
 
-      {selectedNode && (
-        <div
-          style={{
-            position: "absolute",
-            top: "0",
-            right: "0",
-            width: "300px",
-            height: "100%",
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
-            borderLeft: "1px solid #ccc",
-            padding: "20px",
-            boxShadow: "-2px 0 5px rgba(0,0,0,0.1)",
-            fontFamily: "'Inter'",
-            overflowY: "auto",
-          }}
-        >
-          <h2>Node Details</h2>
-          <img
-            src={selectedNode.image}
-            alt={selectedNode.title}
-            style={{ width: "100%", borderRadius: "8px", marginBottom: "10px" }}
-          />
-          <p><strong>ID:</strong> {selectedNode.id}</p>
-          <p><strong>Title:</strong> {selectedNode.title}</p>
-          <button onClick={() => setSelectedNode(null)}>Close</button>
-        </div>
-      )}
-<footer>
-        <p style={{ fontFamily: "'Inter'" }}>&copy; 2025 HelloDunia</p>
-      </footer>
+      <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
+      <Footer />
     </>
   );
 }
