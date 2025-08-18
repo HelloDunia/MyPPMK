@@ -7,29 +7,17 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: "0",
-        right: "0",
-        width: "300px",
-        height: "100%",
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        borderLeft: "1px solid #ccc",
-        padding: "20px",
-        boxShadow: "-2px 0 5px rgba(0,0,0,0.1)",
-        fontFamily: "'Inter'",
-        overflowY: "auto",
-      }}
+      className="absolute top-0 right-0 w-[300px] h-full bg-white bg-opacity-95 border-l border-gray-300 p-5 shadow-lg overflow-y-auto"
     >
-      <h2>Node Details</h2>
+      <h2 className="text-xl font-bold mb-4">Node Details</h2>
       <img
         src={selectedNode.image}
         alt={selectedNode.title}
-        style={{ width: "100%", borderRadius: "8px", marginBottom: "10px" }}
+        className="w-full rounded-lg mb-2.5"
       />
-      <p><strong>ID:</strong> {selectedNode.id}</p>
-      <p><strong>Title:</strong> {selectedNode.title}</p>
-      <button onClick={onClose}>Close</button>
+      <p className="mb-1"><strong>ID:</strong> {selectedNode.id}</p>
+      <p className="mb-4"><strong>Title:</strong> {selectedNode.title}</p>
+      <button className="btn" onClick={onClose}>Close</button>
     </div>
   );
 }
