@@ -45,9 +45,9 @@ export default function App() {
       const imageNodesData = clubsData.map((club) => ({
         id: club.id,
                 image: `${process.env.REACT_APP_SUPABASE_STORAGE_URL}${club.club_abbreviated_name}.jpg`,
-        title: club.club_name,
+        // title: club.club_name,
         shape: "circularImage",
-        label: "",
+        label: club.club_abbreviated_name,
       }));
 
       setGraphNodes(imageNodesData);
