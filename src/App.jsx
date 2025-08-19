@@ -226,6 +226,15 @@ export default function App() {
       />
 
       <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
+      <div className="fixed bottom-4 right-4 z-50">
+        <div className="tooltip tooltip-left" data-tip="What happen 👀 when you click 🖱️ and drag 🤚🏻 the node?">
+          <button className="btn btn-circle btn-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-6 w-6 stroke-current text-blue-800">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
       <Footer />
     </>
   );

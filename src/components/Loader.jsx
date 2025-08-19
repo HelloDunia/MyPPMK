@@ -6,23 +6,32 @@ export default function Loader() {
     "Drawing the circles...",
     "Chat and Building...",
     "Something is happening...",
+    "Connecting the dots...",
+    "Brewing some coffee...",
+    "Aligning the stars...",
+    "Summoning the data gnomes...",
   ];
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [currentMessage, setCurrentMessage] = useState("");
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
-    }, 3000); // Change message every 3 seconds
+    const updateMessage = () => {
+      const randomIndex = Math.floor(Math.random() * messages.length);
+      setCurrentMessage(messages[randomIndex]);
+    };
+
+    updateMessage(); // Set initial message immediately
+
+    const interval = setInterval(updateMessage, 1500); // Change message every 1.5 seconds
 
     return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
+  }, []); // Empty dependency array to run once on mount
 
   return (
     <div
       className="flex flex-col justify-center items-center h-screen text-4xl"
     >
       <span className="loading loading-ring loading-lg"></span>
-      <p className="ml-4 mt-4 text-xl">{messages[currentMessageIndex]}</p>
+      <p className="ml-4 mt-4 text-xl">{currentMessage}</p>
     </div>
   );
 }

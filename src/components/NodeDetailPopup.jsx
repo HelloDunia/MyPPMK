@@ -146,6 +146,10 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
           </div>
         </div>
       </div>
+      {/* Copyright */}
+      <div className="p-4 text-xs text-gray-500 text-center">
+        &copy; 2025 HelloDunia
+      </div>
     </div>
   );
 }
