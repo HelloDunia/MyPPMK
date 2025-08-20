@@ -15,6 +15,7 @@ export default function App() {
   const [networkInstance, setNetworkInstance] = useState(null);
   const [edges, setEdges] = useState([]);
   const [clubs, setClubs] = useState([]);
+  const [supabaseError, setSupabaseError] = useState(null); // New state for Supabase errors
 
   // Keep track of the previously selected node and its connected edges/nodes for resetting
   const [previousSelection, setPreviousSelection] = useState({
@@ -26,47 +27,55 @@ export default function App() {
   useEffect(() => {
     console.log("useEffect triggered");
     const fetchData = async () => {
-      setIsLoading(true);
-      const { data: clubsData, error: clubsError } = await supabase.from("clubs").select();
-      if (clubsError || !clubsData || clubsData.length === 0) {
-        console.error("Error fetching clubs or no clubs found:", clubsError);
-        setIsLoading(false);
-        return;
-      }
-      setClubs(clubsData);
+      try {
+        setIsLoading(true);
+        const { data: clubsData, error: clubsError } = await supabase.from("clubs").select();
+        if (clubsError || !clubsData || clubsData.length === 0) {
+          console.error("Error fetching clubs or no clubs found:", clubsError);
+          setSupabaseError(clubsError ? clubsError.message : "No clubs data found.");
+          setIsLoading(false);
+          return;
+        }
+        setClubs(clubsData);
 
-      const { data: edgesData, error: edgesError } = await supabase.from("edges").select();
-      if (edgesError) {
-        console.error("Error fetching edges:", edgesError);
-        return;
-      }
-      setEdges(edgesData.map(edge => ({...edge, color: "grey"})));
+        const { data: edgesData, error: edgesError } = await supabase.from("edges").select();
+        if (edgesError) {
+          console.error("Error fetching edges:", edgesError);
+          setSupabaseError(edgesError.message);
+          return;
+        }
+        setEdges(edgesData.map(edge => ({...edge, color: "grey"})));
 
-      const imageNodesData = clubsData.map((club) => ({
-        id: club.id,
-                image: `${process.env.REACT_APP_SUPABASE_STORAGE_URL}${club.club_abbreviated_name}.jpg`,
-        // title: club.club_name,
-        shape: "circularImage",
-        label: club.club_abbreviated_name,
-      }));
+        const imageNodesData = clubsData.map((club) => ({
+          id: club.id,
+                  image: `${process.env.REACT_APP_SUPABASE_STORAGE_URL}${club.club_abbreviated_name}.jpg`,
+          // title: club.club_name,
+          shape: "circularImage",
+          label: club.club_abbreviated_name,
+        }));
 
-      setGraphNodes(imageNodesData);
+        setGraphNodes(imageNodesData);
 
-      const preloadImages = async () => {
-        const imagePromises = imageNodesData.map((node) => {
-          return new Promise((resolve) => {
-            const img = new Image();
-            img.src = node.image;
-            img.onload = () => resolve();
-            img.onerror = () => resolve();
+        const preloadImages = async () => {
+          const imagePromises = imageNodesData.map((node) => {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.src = node.image;
+              img.onload = () => resolve();
+              img.onerror = () => resolve();
+            });
           });
-        });
 
-        await Promise.all(imagePromises);
+          await Promise.all(imagePromises);
+          setIsLoading(false);
+        };
+
+        preloadImages();
+      } catch (error) {
+        console.error("Supabase initialization or data fetching error:", error);
+        setSupabaseError(error.message);
         setIsLoading(false);
-      };
-
-      preloadImages();
+      }
     };
 
     fetchData();
@@ -206,6 +215,24 @@ export default function App() {
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (supabaseError) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '20px',
+        color: 'red',
+        textAlign: 'center',
+        padding: '20px'
+      }}>
+        <p>Error: {supabaseError}</p>
+        <p>Please ensure your .env file is correctly configured with Supabase URL and Anon Key.</p>
+      </div>
+    );
   }
 
   const graph = {
