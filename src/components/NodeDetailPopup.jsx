@@ -3,10 +3,20 @@ import React, { useState, useEffect, useRef } from "react";
 export default function NodeDetailPopup({ selectedNode, onClose }) {
   const [currentNode, setCurrentNode] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const prevSelectedNodeId = useRef(null);
+
+  const DESCRIPTION_LIMIT = 200; // Adjust as needed
+
+  // Ref for the div containing the full description content
+  const descriptionContentRef = useRef(null);
+  // State to manage the max-height for the animation
+  const [animatedMaxHeight, setAnimatedMaxHeight] = useState("0px");
 
   useEffect(() => {
     if (selectedNode) {
+      // Reset showFullDescription when a new node is selected
+      setShowFullDescription(false);
       // If a new node is selected AND it's different from the previously displayed node
       // OR if it's the very first node being selected
       if (selectedNode.id !== prevSelectedNodeId.current) {
@@ -35,12 +45,38 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
     }
   }, [selectedNode]);
 
+  // Effect to handle description height animation
+  useEffect(() => {
+    if (descriptionContentRef.current) {
+      if (showFullDescription) {
+        // When expanding, set max-height to the full scrollHeight
+        setAnimatedMaxHeight(`${descriptionContentRef.current.scrollHeight}px`);
+      } else {
+        // When collapsing, first set max-height to current scrollHeight
+        // to ensure the transition starts from the correct height.
+        setAnimatedMaxHeight(`${descriptionContentRef.current.scrollHeight}px`);
+        // Then, after a very small delay, set it to the collapsed height.
+        // This delay allows the browser to register the initial height before starting the transition.
+        const timer = setTimeout(() => {
+          // This is the height for the truncated view.
+          // For now, let's use a fixed value that corresponds to max-h-24 (96px).
+          setAnimatedMaxHeight("96px"); // Corresponds to max-h-24
+        }, 10); // Small delay
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [showFullDescription, currentNode]); // Re-run when node or showFullDescription changes
+
   const handleClose = () => {
     setIsVisible(false);
     // Delay onClose to allow for the closing animation to complete
     setTimeout(() => {
       onClose();
     }, 200);
+  };
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
   };
 
   // When the slide-out transition ends, remove the node data
@@ -57,6 +93,8 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
   const instagramUsername = currentNode.club_instagram?.replace('@', '') || '';
   const instagramUrl = instagramUsername ? `https://instagram.com/${instagramUsername}` : '#';
   const emailUrl = currentNode.club_email ? `mailto:${currentNode.club_email}` : '#';
+
+  const isDescriptionLong = currentNode.club_description.length > DESCRIPTION_LIMIT;
 
   return (
     <div 
@@ -93,7 +131,31 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
         <div className="space-y-4">
           <div className={`bg-gray-800 rounded-lg p-3 transition-all duration-500 ease-in-out delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <h3 className="text-sm font-semibold text-yellow-400 mb-1">ABOUT</h3>
-            <p className="text-gray-200">{currentNode.club_description}</p>
+            <div className="text-gray-200">
+              <div
+                ref={descriptionContentRef}
+                style={{ maxHeight: animatedMaxHeight }}
+                className={`transition-all duration-500 ease-in-out overflow-hidden`}
+              >
+                {currentNode.club_description.split('<br>').map((paragraphText, index) => (
+                  <p key={index} className="indent-first-line mb-2 last:mb-0">
+                    {paragraphText}
+                  </p>
+                ))}
+              </div>
+              {/* Add ellipsis if description is long and not fully shown */}
+              {isDescriptionLong && !showFullDescription && (
+                <p className="text-gray-200">...</p>
+              )}
+              {isDescriptionLong && (
+                <button 
+                  onClick={toggleDescription} 
+                  className="text-yellow-400 hover:text-yellow-300 text-sm mt-2 focus:outline-none cursor-pointer"
+                >
+                  {showFullDescription ? 'Show Less' : 'Read More'}
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
