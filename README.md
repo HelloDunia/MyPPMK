@@ -12,20 +12,11 @@ This project was created for the **Hackathon PPMK 2025 event**.
 By *HelloDunia*
 
 <p align="center">
-  <a href="https://react.dev" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
-  </a>
-  <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase">
-  </a>
-  <a href="https://developer.mozilla.org/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  </a>
-  <a href="https://daisyui.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/DaisyUI-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=fff" alt="DaisyUI">
-  </a>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/DaisyUI-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=fff)" alt="DaisyUI">
 </p>
-
 
 ## About The Project
 
@@ -65,13 +56,12 @@ You need to have `Node.js` and `npm` installed on your machine.
 
 In the project directory, you can run:
 
-```sh
-npm run bas
-```
+### `npm run bas`
 
-Builds the app for production to the `build` folder and served it locally.
-> [!NOTE]
-> The id of the map will be duplicated when run a dev build hence why we build and serve the app even for locally.
+Builds the app for production to the `build` folder.
+It correctly bundles React in production mode and optimizes the build for the best performance. Then it will serve the project immediately. 
+
+`p/s:` The id of the map will be duplicated when run a dev build hence why we build and serve the app even for locally.
 
 ## License
 
