@@ -96,6 +96,27 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
 
   const isDescriptionLong = currentNode.club_description.length > DESCRIPTION_LIMIT;
 
+  const badgeColors = [
+    'badge-primary',
+    'badge-secondary',
+    'badge-accent',
+    'badge-info',
+    'badge-success',
+    'badge-warning',
+    'badge-error',
+  ];
+
+  const getTagColor = (tag) => {
+    // Normalize tag to handle simple plurals and improve consistency
+    const normalizedTag = tag.toLowerCase().trim().replace(/s$/, '');
+    let hash = 0;
+    for (let i = 0; i < normalizedTag.length; i++) {
+      hash = normalizedTag.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % badgeColors.length;
+    return badgeColors[index];
+  };
+
   return (
     <div 
       className={`fixed top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}
@@ -118,12 +139,22 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
       <div className="p-4 flex-1 overflow-y-auto">
         {/* Club Logo */}
         <div className={`transition-all duration-500 ease-in-out ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-          <div className="mb-6 flex justify-center">
+          <div className="mb-6 relative flex flex-col items-center">
             <img
               src={`${process.env.REACT_APP_SUPABASE_STORAGE_URL}${currentNode.club_abbreviated_name}.jpg`}
               alt={currentNode.club_name}
               className="w-32 h-32 rounded-full object-cover border-4 border-yellow-400 shadow-lg"
             />
+            <div className="absolute top-0 right-0 flex flex-wrap justify-end gap-2 -mt-2">
+              {currentNode.club_tag?.split(',').filter(tag => tag.trim() !== '').map((tag, index) => {
+                const trimmedTag = tag.trim();
+                return (
+                  <div key={index} className={`badge ${getTagColor(trimmedTag)} gap-2`}>
+                    {trimmedTag}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
