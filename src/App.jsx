@@ -246,17 +246,18 @@ export default function App() {
   return (
     <> 
       <Header />
-      <GraphCanvas
-        graph={graph}
-        options={options}
-        events={events}
-        getNetwork={(network) => {
-          setNetworkInstance(network);
-        }}
-      />
-
-      <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
-      <div className="fixed bottom-4 right-4 z-50">
+      <div style={{ position: 'relative', height: 'calc(100vh - 128px)' }}>
+        <GraphCanvas
+          graph={graph}
+          options={options}
+          events={events}
+          getNetwork={(network) => {
+            setNetworkInstance(network);
+          }}
+        />
+        <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
+      </div>
+      {/* <div className="fixed bottom-4 right-4 z-50">
         <div className="tooltip tooltip-left" data-tip="What happen 👀 when you click 🖱️ and drag 🤚🏻 the node?">
           <button className="btn btn-circle btn-warning">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-6 w-6 stroke-current text-blue-800">
@@ -264,8 +265,7 @@ export default function App() {
             </svg>
           </button>
         </div>
-      </div>
-      <Footer />
+      </div> */}
     </>
   );
 }

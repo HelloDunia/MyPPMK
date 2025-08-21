@@ -61,8 +61,8 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
         // This delay allows the browser to register the initial height before starting the transition.
         const timer = setTimeout(() => {
           // This is the height for the truncated view.
-          // For now, let's use a fixed value that corresponds to max-h-24 (96px).
-          setAnimatedMaxHeight("96px"); // Corresponds to max-h-24
+          // For now, let's use a fixed value that corresponds to roughly 2 lines.
+          setAnimatedMaxHeight("48px"); // Corresponds to max-h-12
         }, 10); // Small delay
         return () => clearTimeout(timer);
       }
@@ -122,8 +122,8 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
   return (
     <div 
       className={isMobile
-        ? `fixed bottom-0 left-0 w-screen h-auto max-h-[80vh] bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
-        : `fixed top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
+        ? `absolute bottom-0 left-0 w-full h-auto max-h-[85%] bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
+        : `absolute top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
       }
       onTransitionEnd={onTransitionEnd}
     >
