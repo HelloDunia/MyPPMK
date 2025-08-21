@@ -122,14 +122,14 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
   return (
     <div 
       className={isMobile
-        ? `absolute bottom-0 left-0 w-full h-auto max-h-[85%] bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
-        : `absolute top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
+        ? `absolute bottom-0 left-0 w-full h-auto max-h-[85%] bg-gray-900 shadow-2xl flex flex-col ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
+        : `absolute top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
       }
       onTransitionEnd={onTransitionEnd}
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-yellow-600 to-yellow-400 p-4 text-gray-900 flex justify-between items-center">
-        <h2 className="text-xl font-bold">{currentNode.club_name} ({currentNode.club_abbreviated_name})</h2>
+        <h2 className="text-xl font-bold break-words">{currentNode.club_name} ({currentNode.club_abbreviated_name})</h2>
         <button 
           onClick={handleClose}
           className="text-gray-900 hover:text-gray-700 focus:outline-none"
@@ -197,20 +197,20 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
           {isMobile ? (
             <div className={`bg-gray-800 rounded-lg p-3 transition-all duration-500 ease-in-out delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="flex justify-around items-center text-center gap-2">
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center min-w-0">
                   <h3 className="text-xs font-semibold text-yellow-400 mb-1 uppercase">EST.</h3>
                   <p className="text-gray-100 font-medium text-sm">{currentNode.club_year}</p>
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center min-w-0">
                   <h3 className="text-xs font-semibold text-yellow-400 mb-1 uppercase">Members</h3>
                   <p className="text-gray-100 font-medium text-sm">{currentNode.club_members_num}</p>
                 </div>
-                <a href={emailUrl} target="_blank" rel="noopener noreferrer" className="hover:text-yellow-300 transition-colors">
+                <a href={emailUrl} target="_blank" rel="noopener noreferrer" className="hover:text-yellow-300 transition-colors min-w-0">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </a>
-                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-yellow-300 transition-colors">
+                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-yellow-300 transition-colors min-w-0">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 16a4 4 0 100-8 4 4 0 000 8z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16V8a5 5 0 015-5h8a5 5 0 015 5v8a5 5 0 01-5 5H8a5 5 0 01-5-5z" />

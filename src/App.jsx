@@ -81,6 +81,19 @@ export default function App() {
     };
 
     fetchData();
+
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVh();
+
+    window.addEventListener('resize', setVh);
+
+    return () => {
+      window.removeEventListener('resize', setVh);
+    };
   }, []);
 
   
@@ -246,7 +259,7 @@ export default function App() {
   return (
     <> 
       <Header />
-      <div style={{ position: 'relative', height: 'calc(100vh)' }}>
+      <div style={{ position: 'relative', height: 'calc(var(--vh, 1vh) * 100)', overflow: 'hidden' }}>
         <GraphCanvas
           graph={graph}
           options={options}
