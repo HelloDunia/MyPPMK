@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useIsMobile } from "./useIsMobile";
 
 export default function NodeDetailPopup({ selectedNode, onClose }) {
+  const isMobile = useIsMobile();
   const [currentNode, setCurrentNode] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -119,7 +121,10 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
 
   return (
     <div 
-      className={`fixed top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}
+      className={isMobile
+        ? `fixed bottom-0 left-0 w-screen h-auto max-h-[80vh] bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
+        : `fixed top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
+      }
       onTransitionEnd={onTransitionEnd}
     >
       {/* Header */}
