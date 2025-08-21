@@ -246,7 +246,7 @@ export default function App() {
   return (
     <> 
       <Header />
-      <div style={{ position: 'relative', height: 'calc(100vh - 128px)' }}>
+      <div style={{ position: 'relative', height: 'calc(100vh)' }}>
         <GraphCanvas
           graph={graph}
           options={options}
