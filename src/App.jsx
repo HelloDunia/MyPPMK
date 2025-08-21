@@ -256,6 +256,18 @@ export default function App() {
     edges: edges,
   };
 
+  const handlePopupClose = () => {
+    setSelectedNode(null);
+    if (networkInstance) {
+      networkInstance.fit({
+        animation: {
+          duration: 1000,
+          easingFunction: "easeInOutQuad",
+        },
+      });
+    }
+  };
+
   return (
     <> 
       <Header />
@@ -268,7 +280,7 @@ export default function App() {
             setNetworkInstance(network);
           }}
         />
-        <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
+        <NodeDetailPopup selectedNode={selectedNode} onClose={handlePopupClose} />
       </div>
       {/* <div className="fixed bottom-4 right-4 z-50">
         <div className="tooltip tooltip-left" data-tip="What happen 👀 when you click 🖱️ and drag 🤚🏻 the node?">
