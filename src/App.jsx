@@ -7,6 +7,7 @@ import GraphCanvas from "./components/GraphCanvas";
 import { HIGHLIGHT_COLOR, DEFAULT_COLOR } from "./constants/graphConstants";
 import { graphPhysicsOptions } from "./components/Physics";
 import { supabase } from "./supabaseClient";
+import { useIsMobile } from "./components/useIsMobile";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,7 @@ export default function App() {
   const [edges, setEdges] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [supabaseError, setSupabaseError] = useState(null); // New state for Supabase errors
+  const isMobile = useIsMobile();
 
   // Keep track of the previously selected node and its connected edges/nodes for resetting
   const [previousSelection, setPreviousSelection] = useState({
@@ -79,6 +81,19 @@ export default function App() {
     };
 
     fetchData();
+
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVh();
+
+    window.addEventListener('resize', setVh);
+
+    return () => {
+      window.removeEventListener('resize', setVh);
+    };
   }, []);
 
   
@@ -187,9 +202,10 @@ export default function App() {
 
         // Zoom and position the clicked node
         if (networkInstance) {
+          const offset = isMobile ? { x: 0, y: -280 } : { x: -200, y: 0 };
           networkInstance.focus(nodeId, {
             scale: 2.8, // Zoom level
-            offset: { x: -200, y: 0 }, // Offset to move it left (half of sidebar width)
+            offset: offset, // Offset to move it left (half of sidebar width)
             animation: {
               duration: 1000,
               easingFunction: "easeInOutQuad",
@@ -243,17 +259,18 @@ export default function App() {
   return (
     <> 
       <Header />
-      <GraphCanvas
-        graph={graph}
-        options={options}
-        events={events}
-        getNetwork={(network) => {
-          setNetworkInstance(network);
-        }}
-      />
-
-      <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
-      <div className="fixed bottom-4 right-4 z-50">
+      <div style={{ position: 'relative', height: 'calc(var(--vh, 1vh) * 100)', overflow: 'hidden' }}>
+        <GraphCanvas
+          graph={graph}
+          options={options}
+          events={events}
+          getNetwork={(network) => {
+            setNetworkInstance(network);
+          }}
+        />
+        <NodeDetailPopup selectedNode={selectedNode} onClose={() => setSelectedNode(null)} />
+      </div>
+      {/* <div className="fixed bottom-4 right-4 z-50">
         <div className="tooltip tooltip-left" data-tip="What happen 👀 when you click 🖱️ and drag 🤚🏻 the node?">
           <button className="btn btn-circle btn-warning">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-6 w-6 stroke-current text-blue-800">
@@ -261,8 +278,7 @@ export default function App() {
             </svg>
           </button>
         </div>
-      </div>
-      <Footer />
+      </div> */}
     </>
   );
 }

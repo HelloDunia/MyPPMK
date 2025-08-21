@@ -20,6 +20,7 @@ export default function GraphCanvas({ graph, options, events, getNetwork }) {
       options={options}
       events={events}
       getNetwork={getNetwork}
+      style={{ height: "100%" }}
     />
   );
 }
