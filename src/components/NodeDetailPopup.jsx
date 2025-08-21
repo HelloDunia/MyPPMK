@@ -122,8 +122,8 @@ export default function NodeDetailPopup({ selectedNode, onClose }) {
   return (
     <div 
       className={isMobile
-        ? `absolute bottom-0 left-0 w-full h-auto max-h-[85%] bg-gray-900 shadow-2xl flex flex-col ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
-        : `absolute top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
+        ? `absolute bottom-0 left-0 w-full h-auto max-h-[85%] bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : 'translate-y-full'}`
+        : `absolute top-0 right-0 w-80 h-full bg-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isVisible ? 'translate-x-0' : 'translate-x-full'}`
       }
       onTransitionEnd={onTransitionEnd}
     >
