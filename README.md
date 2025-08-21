@@ -22,6 +22,12 @@ By *HelloDunia*
 
 MyPPMK showcases the connections between Malaysian Student Communities in a fun and interactive way.
 
+## 🌟 Try It Out!
+
+You can try our website at **https://myppmk.tinul.net/** 🚀
+
+📅 The website will be available only until the competition finished... ⏳
+
 ## Getting Started
 
 To get our project up and running locally, follow these simple steps.
