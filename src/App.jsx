@@ -7,6 +7,7 @@ import GraphCanvas from "./components/GraphCanvas";
 import { HIGHLIGHT_COLOR, DEFAULT_COLOR } from "./constants/graphConstants";
 import { graphPhysicsOptions } from "./components/Physics";
 import { supabase } from "./supabaseClient";
+import { useIsMobile } from "./components/useIsMobile";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,7 @@ export default function App() {
   const [edges, setEdges] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [supabaseError, setSupabaseError] = useState(null); // New state for Supabase errors
+  const isMobile = useIsMobile();
 
   // Keep track of the previously selected node and its connected edges/nodes for resetting
   const [previousSelection, setPreviousSelection] = useState({
@@ -187,9 +189,10 @@ export default function App() {
 
         // Zoom and position the clicked node
         if (networkInstance) {
+          const offset = isMobile ? { x: 0, y: -280 } : { x: -200, y: 0 };
           networkInstance.focus(nodeId, {
             scale: 2.8, // Zoom level
-            offset: { x: -200, y: 0 }, // Offset to move it left (half of sidebar width)
+            offset: offset, // Offset to move it left (half of sidebar width)
             animation: {
               duration: 1000,
               easingFunction: "easeInOutQuad",
